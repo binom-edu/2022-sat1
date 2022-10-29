@@ -1,6 +1,8 @@
-# a = 5
-# b = 7
-# print(a + b)
 a = int(input())
 b = int(input())
-print(a + b)
+if a > b:
+    print('Первое число больше')
+elif a == b:
+    print('Равны')
+else:
+    print('Второе число больше')
