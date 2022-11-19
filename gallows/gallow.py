@@ -1,3 +1,5 @@
+import random
+
 gallows = [
     '''
 ========||
@@ -63,4 +65,14 @@ gallows = [
 ==========
     ''',
 ]
-print(gallows[6])
+
+with open('words.txt') as file:
+    words = file.read().splitlines()
+
+secret = random.choice(words)
+
+print('Игра "Виселица". Компьютер загадал слово. Попытайтесь его отгадать.')
+
+сorrect = ['а', 'н']
+wrong = ['п', 'в']
+secret = 'карандаш'
