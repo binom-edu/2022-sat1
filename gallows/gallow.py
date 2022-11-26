@@ -73,6 +73,16 @@ secret = random.choice(words)
 
 print('Игра "Виселица". Компьютер загадал слово. Попытайтесь его отгадать.')
 
-сorrect = ['а', 'н']
+correct = ['а', 'н']
 wrong = ['п', 'в']
 secret = 'карандаш'
+
+out = ''
+for letter in secret:
+    if letter in correct:
+        out += letter
+    else:
+        out += '-'
+print('Загадано:', out)
+print('Ошибки:', wrong)
+print(gallows[len(wrong)])
