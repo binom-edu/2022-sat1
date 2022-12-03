@@ -1,5 +1,24 @@
 import random
 
+def printFrame():
+    out = ''
+    for letter in secret:
+        if letter in correct:
+            out += letter
+        else:
+            out += '-'
+    print('Загадано:', out)
+    print('Ошибки:', *wrong)
+    print(gallows[len(wrong)])
+
+def getUserMove():
+    alf = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
+    while True:
+        s = input('Ваш ход: ')
+        if len(s) != 1:
+            print('Нужно ввести ровно один символ!')
+            continue
+
 gallows = [
     '''
 ========||
@@ -77,12 +96,4 @@ correct = ['а', 'н']
 wrong = ['п', 'в']
 secret = 'карандаш'
 
-out = ''
-for letter in secret:
-    if letter in correct:
-        out += letter
-    else:
-        out += '-'
-print('Загадано:', out)
-print('Ошибки:', wrong)
-print(gallows[len(wrong)])
+printFrame()
