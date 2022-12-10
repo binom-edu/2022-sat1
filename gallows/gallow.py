@@ -14,10 +14,17 @@ def printFrame():
 def getUserMove():
     alf = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
     while True:
-        s = input('Ваш ход: ')
+        s = input('Ваш ход: ').lower()
         if len(s) != 1:
             print('Нужно ввести ровно один символ!')
             continue
+        if not s in alf:
+            print('Требуется буква русского алфавита!')
+            continue
+        if s in correct or s in wrong:
+            print('Эта буква уже называлась!')
+            continue
+        return s
 
 gallows = [
     '''
@@ -89,11 +96,18 @@ with open('words.txt') as file:
     words = file.read().splitlines()
 
 secret = random.choice(words)
+wrong = []
+correct = []
 
 print('Игра "Виселица". Компьютер загадал слово. Попытайтесь его отгадать.')
 
-correct = ['а', 'н']
-wrong = ['п', 'в']
-secret = 'карандаш'
-
-printFrame()
+gameOn = True
+while gameOn:
+    printFrame()
+    letter = getUserMove()
+    if letter in secret:
+        correct.append(letter)
+        print('Верно!')
+    else:
+        wrong.append(letter)
+        print('Ошибка!')
