@@ -95,6 +95,18 @@ gallows = [
 with open('words.txt') as file:
     words = file.read().splitlines()
 
+def checkWin():
+    for letter in secret:
+        if not letter in correct:
+            return False
+    return True
+
+def checkLose():
+    if len(wrong) == len(gallows) - 1:
+        return True
+    else:
+        return False
+
 secret = random.choice(words)
 wrong = []
 correct = []
@@ -111,3 +123,10 @@ while gameOn:
     else:
         wrong.append(letter)
         print('Ошибка!')
+    if checkWin():
+        print('Вы победили!')
+        gameOn = False
+    if checkLose():
+        print('Вы проиграли. Было загадано слово', secret)
+        gameOn = False
+printFrame()
