@@ -26,6 +26,33 @@ def getUserMove(board):
 def makeMove(board, tile, move):
     board[move] = tile
 
+def checkVictory(board, tile):
+    if  board[1] == tile and board[2] == tile and board[3] == tile or \
+        board[4] == tile and board[5] == tile and board[6] == tile or \
+        board[7] == tile and board[8] == tile and board[9] == tile or \
+        board[1] == tile and board[4] == tile and board[7] == tile or \
+        board[2] == tile and board[5] == tile and board[8] == tile or \
+        board[3] == tile and board[6] == tile and board[9] == tile or \
+        board[1] == tile and board[5] == tile and board[9] == tile or \
+        board[3] == tile and board[5] == tile and board[7] == tile:
+        return True
+    return False
+
+def checkDraw(board):
+    if checkVictory(board, userTile) or checkVictory(board, computerTile):
+        return False
+    for i in board:
+        if i == ' ':
+            return False
+    return True
+
+def getComputerMove(board):
+    valid_moves = []
+    for i in range(1, 10):
+        if board[i] == ' ':
+            valid_moves.append(i)
+    return random.choice(valid_moves)
+
 print('Крестики-нолики')
 print('Используйте цифровую клавиатуру, чтобы сделать ход.')
 
@@ -41,13 +68,25 @@ if ans.lower().startswith('y'):
 
 
 board = [' '] * 10
-board[8] = 'O'
-board[5] = 'X'
-printBoard(board)
 
 turn = random.choice(['user', 'computer'])
 print('Первым ходит:', turn)
 
-userMove = getUserMove(board)
-makeMove(board, userTile, userMove)
-printBoard(board)
+gameOn = True
+while gameOn:
+    printBoard(board)
+    if turn == 'user':
+        userMove = getUserMove(board)
+        makeMove(board, userTile, userMove)
+        if checkVictory(board, userTile):
+            print('Вы победили!')
+            gameOn = False
+        turn = 'computer'
+    else:
+        print('Ход компьютера')
+        computerMove = getComputerMove(board)
+        makeMove(board, computerTile, computerMove)
+        if checkVictory(board, computerTile):
+            print('Победил компьютер')
+            gameOn = False
+        turn = 'user'
