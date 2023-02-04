@@ -41,8 +41,8 @@ def checkVictory(board, tile):
 def checkDraw(board):
     if checkVictory(board, userTile) or checkVictory(board, computerTile):
         return False
-    for i in board:
-        if i == ' ':
+    for i in range(1, 10):
+        if board[i] == ' ':
             return False
     return True
 
@@ -51,10 +51,38 @@ def getComputerMove(board):
     for i in range(1, 10):
         if board[i] == ' ':
             valid_moves.append(i)
+    if level > 1:
+        # пытаемся сделать выигрывающий ход
+        for i in valid_moves:
+            bc = board.copy()
+            makeMove(bc, computerTile, i)
+            if checkVictory(bc, computerTile):
+                return i
+    if level > 2:
+        # пытаемся сделать блокирующий ход
+        for i in valid_moves:
+            bc = board.copy()
+            makeMove(bc, userTile, i)
+            if checkVictory(bc, userTile):
+                return i
+    if level > 3:
+        # пытаемся занять центр
+        if board[5] == ' ':
+            return 5
+    if level > 4:
+        # пытаемся занять угол
+        empty_corners = []
+        for i in [1, 3, 7, 9]:
+            if board[i] == ' ':
+                empty_corners.append(i)
+        if empty_corners:
+            return random.choice(empty_corners)
+    
     return random.choice(valid_moves)
 
 print('Крестики-нолики')
 print('Используйте цифровую клавиатуру, чтобы сделать ход.')
+level = int(input('Укажите уровень сложности (1 - 5): '))
 
 tiles = ['X', 'O']
 random.shuffle(tiles)
@@ -90,3 +118,8 @@ while gameOn:
             print('Победил компьютер')
             gameOn = False
         turn = 'user'
+    if checkDraw(board):
+        print('Ничья!')
+        gameOn = False
+
+printBoard(board)
