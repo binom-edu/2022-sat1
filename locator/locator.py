@@ -76,12 +76,20 @@ def getMinDistance(x1, y1):
     return ans
 
 
-
 WIDTH = 20
 HEIGHT = 11
 MAX_CHESTS = 3
 EMPTY = '~-'
+MAX_MOVES = 30
+
+print(f'На карте спрятаны сундуки с сокровищами. У вас есть {MAX_MOVES} ходов, чтобы их найти. Используйте локаторы, чтобы узнать расстояние до ближайшего сундука.')
+
 board = makeBoard()
 chests = makeChests()
-printBoard(showChests=True)
-print(chests)
+
+for moves in range(MAX_MOVES, 0, -1):
+    printBoard(showChests=True)
+    print(f'Осталось ходов: {moves}')
+    x, y = getUserMove()
+    dist = getMinDistance(x, y)
+    
