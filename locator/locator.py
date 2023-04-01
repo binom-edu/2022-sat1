@@ -88,8 +88,24 @@ board = makeBoard()
 chests = makeChests()
 
 for moves in range(MAX_MOVES, 0, -1):
-    printBoard(showChests=True)
-    print(f'Осталось ходов: {moves}')
+    printBoard(showChests=False)
+    print(f'Осталось ходов: {moves}, сундуков: {len(chests)}')
     x, y = getUserMove()
     dist = getMinDistance(x, y)
-    
+    if dist == 0:
+        print('Сундук найден!')
+        board[x][y] = '@'
+        chests.remove((x, y))
+        if len(chests) == 0:
+            print('Победа! Все сундуки найдены!')
+            printBoard()
+            break
+    elif dist < 10:
+        print(f'До ближайшего сундука {dist}')
+        board[x][y] = dist
+    else:
+        print('Ничего не найдено')
+        board[x][y] = 'X'
+else:
+    print('Ходы закончились. Вы проиграли')
+    printBoard(showChests=True)
