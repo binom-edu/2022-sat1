@@ -48,7 +48,34 @@ def makeChests():
 def getUserMove():
     while True:
         s = input('Ваш ход (номер строки и столбца через пробел): ').split()
-        
+        if len(s) != 2:
+            print('Некорректный ввод')
+            continue
+        if not (s[0].isdigit() and s[1].isdigit()):
+            print('Требуется ввести два числа')
+            continue
+        x = int(s[0])
+        y = int(s[1])
+        if not(0 <= x < HEIGHT and 0 <= y < WIDTH):
+            print('Введенные координаты за пределами поля')
+            continue
+        return x, y
+
+def getDistance(x1, y1, x2, y2):
+    a = x2 - x1
+    b = y2 - y1
+    c = (a ** 2 + b ** 2) ** 0.5
+    return int(c)
+
+def getMinDistance(x1, y1):
+    ans = 10
+    for x2, y2 in chests:
+        d = getDistance(x1, y1, x2, y2)
+        if d < ans:
+            ans = d
+    return ans
+
+
 
 WIDTH = 20
 HEIGHT = 11
