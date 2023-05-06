@@ -14,9 +14,26 @@ def getNewBoard() -> list:
 
 def printBoard(board: list) -> None:
     '''Печатает доску'''
+    print('  a b c d e f g h')
     for i in range(8):
-        print(*board[i])
+        print(8 - i, *board[i], 8 - i)
+    print('  a b c d e f g h')
 
+def getUserMove() -> list:
+    '''Получает ход игрока с проверкой корректности'''
+    while True:
+        s = input('Ваш ход. Используйте шахматную нотацию (например, b6): ')
+        if len(s) != 2:
+            print('Ожидается ровно два символа')
+            continue
+        if not s[0] in 'abcdefgh' or not s[1] in '12345678':
+            print('Используйте шахматную нотацию')
+            continue
+        row = 8 - int(s[1])
+        column = 'abcdefgh'.find(s[0])
+        if board[row][column] != EMPTY:
+            print('Это поле занято')
+            continue
 
 board = getNewBoard()
 printBoard(board)
