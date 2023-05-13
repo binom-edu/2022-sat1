@@ -19,6 +19,41 @@ def printBoard(board: list) -> None:
         print(8 - i, *board[i], 8 - i)
     print('  a b c d e f g h')
 
+def getTilesToFlip(x: int, y: int, tile: str) -> list:
+    '''Создает список фишек, которые будут перевернуты, если сделать ход в x, y'''
+    otherTile = TILES[(TILES.index(tile) + 1) % 2]
+    directions = [
+        [-1, 0],
+        [-1, 1],
+        [0, 1],
+        [1, 1],
+        [1, 0],
+        [1, -1],
+        [0, -1],
+        [-1, -1]
+    ]
+    ans = []
+    for dx, dy in directions:
+        i, j = x, y
+        while 0 <= i < 8 and 0 <= j < 8:
+            i += dx
+            j += dy
+            if i < 0 or i > 7 or j < 0 or j > 7:
+                break
+            if board[i][j] == EMPTY:
+                break
+            if board[i][j] == otherTile:
+                continue
+            i -= dx
+            j -= dy
+            while (i, j) != (x, y):
+                ans.append([i, j])
+                i -= dx
+                j -= dy
+            break
+    return ans
+        
+
 def getUserMove() -> list:
     '''Получает ход игрока с проверкой корректности'''
     while True:
@@ -34,6 +69,14 @@ def getUserMove() -> list:
         if board[row][column] != EMPTY:
             print('Это поле занято')
             continue
+        if len(getTilesToFlip(row, column, userTile)) == 0:
+            print('В результате хода должны быть перевернуты фишки')
+            continue
+        return [row, column]
+
 
 board = getNewBoard()
 printBoard(board)
+userTile, computerTile = TILES
+row, column = getUserMove()
+print(getTilesToFlip(row, column, userTile))
