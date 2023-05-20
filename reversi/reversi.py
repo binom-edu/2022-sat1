@@ -1,3 +1,5 @@
+import random
+
 EMPTY = '⋅'
 TILES = ['○', '●']
 
@@ -53,7 +55,6 @@ def getTilesToFlip(x: int, y: int, tile: str) -> list:
             break
     return ans
         
-
 def getUserMove() -> list:
     '''Получает ход игрока с проверкой корректности'''
     while True:
@@ -74,9 +75,38 @@ def getUserMove() -> list:
             continue
         return [row, column]
 
+def makeMove(x: int, y: int, tile: str) -> None:
+    tilesToFlip = getTilesToFlip(x, y, tile)
+    for i, j in tilesToFlip:
+        board[i][j] = tile
+    board[x][y] = tile
+
+def getValidMoves(tile: str) -> list:
+    res = []
+    for i in range(8):
+        for j in range(8):
+            if board[i][j] == EMPTY and len(getTilesToFlip(i, j, tile)) > 0:
+                res.append([i, j])
+    return res
+
+def getComputerMove() -> list:
+    validMoves = getValidMoves(computerTile)
+    if validMoves:
+        return random.choice(validMoves)
 
 board = getNewBoard()
 printBoard(board)
 userTile, computerTile = TILES
-row, column = getUserMove()
-print(getTilesToFlip(row, column, userTile))
+
+gameOn = True
+turn = 'user'
+while gameOn:
+    if turn == 'user' and getValidMoves(userTile):
+        i, j = getUserMove()
+        makeMove(i, j, userTile)
+        turn = 'computer'
+    else:
+        i, j = getComputerMove()
+        makeMove(i, j, computerTile)
+        turn = 'user'
+    printBoard(board)
