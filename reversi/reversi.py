@@ -20,6 +20,8 @@ def printBoard(board: list) -> None:
     for i in range(8):
         print(8 - i, *board[i], 8 - i)
     print('  a b c d e f g h')
+    d = getCount()
+    print('Счет: игрок', d['user'], '-', d['computer'], 'компьютер')
 
 def getTilesToFlip(x: int, y: int, tile: str) -> list:
     '''Создает список фишек, которые будут перевернуты, если сделать ход в x, y'''
@@ -94,9 +96,23 @@ def getComputerMove() -> list:
     if validMoves:
         return random.choice(validMoves)
 
+def getCount() -> dict:
+    '''Получает счет игры'''
+    d = {
+        'user': 0,
+        'computer': 0
+    }
+    for i in range(8):
+        for j in range(8):
+            if board[i][j] == userTile:
+                d['user'] += 1
+            elif board[i][j] == computerTile:
+                d['computer'] += 1
+    return d
+
+userTile, computerTile = TILES
 board = getNewBoard()
 printBoard(board)
-userTile, computerTile = TILES
 
 gameOn = True
 turn = 'user'
